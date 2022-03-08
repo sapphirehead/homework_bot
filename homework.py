@@ -26,12 +26,6 @@ HOMEWORK_STATUSES = {
     'rejected': 'Работа проверена: у ревьюера есть замечания.'
 }
 
-ENVIRONMENT_VARIABLES = {
-    'PRACTICUM_TOKEN': PRACTICUM_TOKEN,
-    'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
-    'TELEGRAM_CHAT_ID': TELEGRAM_CHAT_ID
-}
-
 log_format = ('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s '
               '- %(lineno)d - %(message)s')
 
@@ -148,11 +142,17 @@ def check_tokens():
     для работы программы. Если отсутствует хотя бы одна переменная окружения
      — функция должна вернуть False, иначе — True.
     """
+    ENVIRONMENT_VARIABLES = {
+        'PRACTICUM_TOKEN': PRACTICUM_TOKEN,
+        'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
+        'TELEGRAM_CHAT_ID': TELEGRAM_CHAT_ID
+    }
     flag = True
     for name, variable in ENVIRONMENT_VARIABLES.items():
         if not variable:
             logger.critical(f'Не определена переменная окружения {name}.')
             flag = False
+            break
     return flag
 
 
