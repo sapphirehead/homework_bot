@@ -53,7 +53,7 @@ def send_message(bot, message):
 def get_api_answer(current_timestamp):
     """Делает запрос к единственному эндпоинту API-сервиса.
     В качестве параметра функция получает временную метку.
-    Возвращает ответ API преобразовав его из формата JSON к типам данных Python.
+    Возвращает ответ API, преобразовав из формата JSON к словарю Python.
     """
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}  # - 60 * 1800 * 24
