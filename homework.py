@@ -63,7 +63,7 @@ def get_api_answer(current_timestamp):
     try:
         status = response.status_code
     except ValueError:
-        raise ValueError(f'Нет информации о статусе работы.')
+        raise ValueError('Нет информации о статусе работы.')
     if status != HTTPStatus.OK:
         raise exceptions.CustomStatusError(
             f'Ошибка при запросе к основному API '
@@ -84,9 +84,9 @@ def check_response(response):
     список домашних работ по ключу 'homeworks'.
     """
     if not isinstance(response, dict):
-        raise TypeError(f'Данные не являются типом: словарь')
+        raise TypeError('Данные не являются типом: словарь')
     if 'homeworks' not in response:
-        raise KeyError(f'Ключ homeworks отсутствует.')
+        raise KeyError('Ключ homeworks отсутствует.')
     homeworks_list = response['homeworks']
 
     if not isinstance(homeworks_list, list):
@@ -108,10 +108,10 @@ def parse_status(homework):
     """
     homework_name = homework.get('homework_name')
     if homework_name is None:
-        raise KeyError(f'Ключа homework_name не существует')
+        raise KeyError('Ключа homework_name не существует')
     homework_status = homework.get('status')
     if homework_status is None:
-        raise KeyError(f'Ключа homework_status не существует')
+        raise KeyError('Ключа homework_status не существует')
     verdict = settings.HOMEWORK_STATUSES.get(homework_status)
     if verdict is None:
         raise KeyError(f'Ключа {homework_status} не существует')
@@ -162,8 +162,8 @@ def check_tokens():
 def convert_date(date):
     """Конвертирует строку с датой к timestamp."""
     return datetime.datetime.strptime(
-                date, '%Y-%m-%dT%H:%M:%SZ'
-            ).timestamp()
+        date, '%Y-%m-%dT%H:%M:%SZ'
+    ).timestamp()
 
 
 def main():
