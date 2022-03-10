@@ -13,5 +13,6 @@ class CustomTokenError(Exception):
 class CustomEmptyListError(Exception):
     """Custom exception if list with homeworks is empty"""
 
+
 class CustomAPINotAccessError(Exception):
     """If the endpoint is not reachable."""

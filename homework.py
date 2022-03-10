@@ -41,7 +41,7 @@ def send_message(bot, message):
             text=f'Привет, вот статус твоей работы: {message}.'
         )
         logger.info('Отправлено сообщение.')
-    except requests.exceptions.RequestException as err_requests:
+    except Exception as err_requests:
         logger.info(f'Не удалось отправить сообщение: {err_requests}')
 
 
@@ -95,7 +95,7 @@ def check_response(response):
         )
     if not homeworks_list:
         raise exceptions.CustomEmptyListError(
-            f'Список работ пуст: {homeworks_list}'
+            f'Список работ пуст: {response}'
         )
 
     return homeworks_list
@@ -195,6 +195,8 @@ def main():
 
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
+            if type(error) is exceptions.CustomEmptyListError:
+                message = 'На эту дату список работ пуст.'
             if check_message(message, last_message):
                 send_message(bot, message)
                 last_message = message
