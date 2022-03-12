@@ -194,13 +194,15 @@ def main():
             time.sleep(settings.RETRY_TIME)
 
         except Exception as error:
+            flag_info = False
             message = f'Сбой в работе программы: {error}'
             if type(error) is exceptions.CustomEmptyListError:
                 message = 'На эту дату список работ пуст.'
+                flag_info = True
             if check_message(message, last_message):
                 send_message(bot, message)
                 last_message = message
-            logger.error(message)
+            logger.error(message) if not flag_info else logger.info(message)
             time.sleep(settings.RETRY_TIME)
 
 
