@@ -51,7 +51,7 @@ def get_api_answer(current_timestamp):
     Возвращает ответ API, преобразовав из формата JSON к словарю Python.
     """
     timestamp = current_timestamp or int(time.time())
-    params = {'from_date': timestamp}  # - 1800 * 24
+    params = {'from_date': timestamp}  # - 60 * 1800 * 24
     try:
         response = requests.get(
             settings.ENDPOINT, headers=HEADERS, params=params
@@ -93,10 +93,11 @@ def check_response(response):
         raise exceptions.CustomNotListError(
             f'Работы хранятся не в виде списка: {homeworks_list}'
         )
-    if not homeworks_list:
-        raise exceptions.CustomEmptyListError(
+    if len(homeworks_list) == 0:
+        '''raise exceptions.CustomEmptyListError(
             f'Список работ пуст: {response}'
-        )
+        )'''
+        logger.info(f'Список работ пуст: {response}')
 
     return homeworks_list
 
@@ -134,7 +135,7 @@ def parse_date(homework):
     return homework_date
 
 
-def check_message(message, last_message):
+def check_message_not_same(message, last_message):
     """Сравнивает предыдущий статус работы с вновь полученным.
     Возвращает True если они не равны, чтобы не дублировать сообщения.
     """
@@ -185,24 +186,24 @@ def main():
         try:
             response = get_api_answer(current_timestamp)
             homeworks_list = check_response(response)
-            status = parse_status(homeworks_list[0])
-            date_updated = convert_date(parse_date(homeworks_list[0]))
-            if check_message(status, last_message):
+            if len(homeworks_list) != 0:
+                status = parse_status(homeworks_list[0])
+                date_updated = convert_date(parse_date(homeworks_list[0]))
+            else:
+                status = 'На данную дату список работ пуст.'
+                date_updated = current_timestamp
+            if check_message_not_same(status, last_message):
                 send_message(bot, status)
                 last_message = status
             current_timestamp = int(date_updated) or current_timestamp
             time.sleep(settings.RETRY_TIME)
 
         except Exception as error:
-            flag_info = False
             message = f'Сбой в работе программы: {error}'
-            if type(error) is exceptions.CustomEmptyListError:
-                message = 'На эту дату список работ пуст.'
-                flag_info = True
-            if check_message(message, last_message):
+            if check_message_not_same(message, last_message):
                 send_message(bot, message)
                 last_message = message
-            logger.error(message) if not flag_info else logger.info(message)
+            logger.error(message)
             time.sleep(settings.RETRY_TIME)
 
 
