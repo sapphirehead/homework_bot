@@ -8,22 +8,24 @@ python-telegram-bot==13.7
 
 ### Запуск
 
-    - склонируйте репозиторий
+- склонируйте репозиторий
 
-```git clone git@github.com:sapphirehead/homework_bot.git```
+```
+git clone git@github.com:sapphirehead/homework_bot.git
+```
 
-    - в корне проекта создайте и активируйте виртуальное окружение
+- в корне проекта создайте и активируйте виртуальное окружение
 
 ```
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-    - установите зависимости
+- установите зависимости
 
-```pip install -r requirements.txt```
+``` pip install -r requirements.txt ```
 
-    - создайте файл .env и добавьте в него следующие переменные:
+- создайте файл .env и добавьте в него следующие переменные:
 
 ```
 PRACTICUM_TOKEN = <ваш токен на яндекс практикуме>
