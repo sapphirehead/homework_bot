@@ -3,7 +3,7 @@ python telegram bot который обращается к API Yandex.Practicum 
 
 ## Технологии
 
-Python 3.9
+Python 3.9,
 python-telegram-bot==13.7
 
 ### Запуск
